@@ -12,7 +12,7 @@ pipeline {
 
         stage('Build and Deploy') {
             steps {
-		echo "Build and deplo steps go here"
+		echo "Build and deploy steps go here"
                 sh 'cp -r index.html /tmp/'
             }
         }
