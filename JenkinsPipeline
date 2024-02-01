@@ -14,7 +14,7 @@ pipeline {
             steps {
 		echo "Build and deploy steps go here"
                 sh 'cp -r index.html /tmp/'
-		ip address show
+		sh "hostname -I"
             }
         }
 
