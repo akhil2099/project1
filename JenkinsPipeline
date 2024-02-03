@@ -2,21 +2,28 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                checkout scm
+                git 'https://github.com/akhil2099/pipeline1.git'
             }
         }
-
-        stage('Build and Deploy') {
-            steps {
-                script {
-                    // Configure Docker before using it
-                    def dockerImage = docker.image('nginx').pull()
-                    dockerImage.inside('-p 8080:80') {
-                        sh 'cp index.html /usr/share/nginx/html/'
-                    }
-                }
+        // Add more stages as needed
+    }
+}
+stage('Copy HTML to Nginx') {
+    steps {
+        script {
+            docker.image('nginx').inside {
+                sh 'cp /home/akhil/pipeline1/index.html /usr/share/nginx/html/'
+            }
+        }
+    }
+}
+stage('Restart Nginx') {
+    steps {
+        script {
+            docker.image('nginx').inside {
+                sh 'service nginx restart'
             }
         }
     }
