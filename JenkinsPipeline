@@ -1,14 +1,18 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'jenkins/jenkins:latest'
+            label 'docker' // Optional label to restrict where the pipeline can run
+            // Mount Docker socket into the Jenkins container to allow Docker commands
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     stages {
         stage('Checkout') {
             steps {
                 script {
-                    // Clean workspace before checkout
                     deleteDir()
-
-                    // Clone the repository and specify the branch
                     checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/akhil2099/pipeline1.git']]])
                 }
             }
@@ -16,6 +20,7 @@ pipeline {
         stage('Copy HTML to Nginx') {
             steps {
                 script {
+                    sh 'docker image ls' // Just to check if Docker is available
                     docker.image('nginx').inside {
                         sh 'cp /home/akhil/pipeline1/index.html /usr/share/nginx/html/'
                     }
