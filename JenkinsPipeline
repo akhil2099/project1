@@ -11,8 +11,9 @@ pipeline {
         stage('Build and Deploy') {
             steps {
                 script {
-                    docker.image('nginx').pull()
-                    docker.image('nginx').withRun('-p 8080:80') {
+                    // Configure Docker before using it
+                    def dockerImage = docker.image('nginx').pull()
+                    dockerImage.inside('-p 8080:80') {
                         sh 'cp index.html /usr/share/nginx/html/'
                     }
                 }
