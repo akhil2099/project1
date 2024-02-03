@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'jenkins/jenkins:latest'
-            label 'docker' // Optional label to restrict where the pipeline can run
+            //label 'docker' // Optional label to restrict where the pipeline can run
             // Mount Docker socket into the Jenkins container to allow Docker commands
             args '-v /var/run/docker.sock:/var/run/docker.sock'
         }
