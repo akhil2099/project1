@@ -5,9 +5,20 @@ pipeline {
         stage('Run Nginx Container') {
             steps {
                 script {
+                    // Check if the container exists
+                    def containerExists = sh(script: 'docker ps -a --format "{{.Names}}" | grep my-nginx', returnStatus: true) == 0
+
+                    // If the container exists, stop and remove it
+                    if (containerExists) {
+                        sh 'docker stop my-nginx'
+                        sh 'docker rm my-nginx'
+                    }
+
+                    // Run Nginx container
                     sh 'docker run -d -p 80:80 --name my-nginx -v /home/akhil/pipeline1:/usr/share/nginx/html nginx'
                 }
             }
         }
     }
 }
+
