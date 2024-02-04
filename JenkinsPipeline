@@ -2,31 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Run Nginx Container') {
             steps {
-	    	deleteDir()
-                // Checkout the source code from your version control system (e.g., Git)
-                checkout([$class: 'GitSCM',branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/akhil2099/pipeline1.git']]])
+                script {
+                    sh 'docker run -d -p 80:80 --name my-nginx -v /home/akhil/pipeline1:/usr/share/nginx/html nginx'
+                }
             }
-        }
-
-        stage('Build and Deploy') {
-            steps {
-		echo "Build and deplo steps go here"
-                sh 'cp -r index.html /tmp/'
-            }
-        }
-
-                
-    }
-
-    post {
-        success {
-            echo 'Pipeline succeeded! Trigger additional steps if needed.'
-        }
-        failure {
-            echo 'Pipeline failed! Trigger rollback or other actions if needed.'
         }
     }
 }
-
