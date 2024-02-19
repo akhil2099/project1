@@ -2,6 +2,12 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the repository files into the workspace
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/akhil2099/pipeline1.git']]])
+            }
+        }
         stage('Run Nginx Container') {
             steps {
                 script {
@@ -21,4 +27,5 @@ pipeline {
         }
     }
 }
+
 
