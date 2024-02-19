@@ -26,7 +26,7 @@ pipeline {
                     }
 
                     // Run Nginx container
-                    sh 'docker run -d -p 80:80 --name my-nginx -v /var/lib/jenkins/workspace/pipeline1:/usr/share/nginx/html nginx'
+                    sh 'docker run -d -p 80:80 --name my-nginx -v /var/lib/jenkins/workspace/project-1:/usr/share/nginx/html nginx'
                 }
             }
         }
